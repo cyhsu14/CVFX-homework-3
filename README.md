@@ -59,25 +59,25 @@
 
 這裡說明Partial Convolutional Layer的設計、mask更新的作法、整體模型的架構以及Loss function。
 
-** Partial Convolutional Layer **
+**Partial Convolutional Layer**
 
 <img src="./img/method2_PCL.JPG" width="600px" />
 
 圖中W为Convolution filter weight，b是偏差，X是當下的圖片，M是mask，可以看到output值只受到沒有被mask的地方影響。
 
-** mask更新的作法 **
+**mask更新的作法**
 
 <img src="./img/method2_mask.JPG" width="400px" />
 
 mask值的改變是用來標記有效區，只要輸入的卷積可以在至少一個有效值上調整其output，則標記為有效。
 
-** 整體模型的架構 **
+**整體模型的架構**
 
 類似於UNet，但將所有的Convolutional layer都改成Partial convolutional layer，以及在Decoding階段使用Nearest Neighbor Up-sampling。
 
-** Loss function **
+**Loss function**
 
-<img src="./img/method2_LF.JPG" width="600px" />
+<img src="./img/method2_LF.JPG" width="800px" />
 
 模型的Loss function(L_total)是由各種loss function依不同權重組合而成，少了任何一個都會對結果圖造成不良影響，例如少了style loss會造成魚鱗狀的artifacts、少了perceptual loss會造成網格狀的artifacts。
 
