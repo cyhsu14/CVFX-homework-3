@@ -47,11 +47,47 @@
 第一張的移除效果就還滿好的，遠點看就看不太出來。第二張沒那麼好，｀因為樹的範圍較大，背景（牆壁）卻很單一，不怎麼能提供足夠的填補資訊，所以才有那麼多雜訊。但是地板跟牆壁的交接處，是有分辨出分隔的，所以我們認為還可以接受。
 
 
-## Method 2:NVIDIA AI Playground_Image Inpainting
+## Method 2：Image Inpainting for Irregular Holes Using Partial Convolutions
 
-### 作法
+### 原理說明
+
+#### 目標:
+
+由於現存利用深度學習做Image Inpainting的方式，通常會造成結果圖的顏色差異與模糊，因此還會再加上一些post-processing，但這樣一來不僅更耗時耗資源，失敗的可能性也很大。因此這篇論文提出一種使用部分卷積(Partial convolution)的改善方法，部分卷積是指卷積只在圖片的有效像素上作用，且圖片的mask會隨著layer做更新，也就是在訓練的過程中，帶有mask的圖片和mask都會一直用到。
+
+#### 作法:
+
+這裡說明Partial Convolutional Layer的設計、mask更新的作法、整體模型的架構以及Loss function。
+
+** Partial Convolutional Layer **
+
+<img src="./img/method2_PCL.JPG" width="600px" />
+
+圖中W为Convolution filter weight，b是偏差，X是當下的圖片，M是mask，可以看到output值只受到沒有被mask的地方影響。
+
+** mask更新的作法 **
+
+<img src="./img/method2_mask.JPG" width="400px" />
+
+mask值的改變是用來標記有效區，只要輸入的卷積可以在至少一個有效值上調整其output，則標記為有效。
+
+** 整體模型的架構 **
+
+類似於UNet，但將所有的Convolutional layer都改成Partial convolutional layer，以及在Decoding階段使用Nearest Neighbor Up-sampling。
+
+** Loss function **
+
+<img src="./img/method2_LF.JPG" width="600px" />
+
+模型的Loss function(L_total)是由各種loss function依不同權重組合而成，少了任何一個都會對結果圖造成不良影響，例如少了style loss會造成魚鱗狀的artifacts、少了perceptual loss會造成網格狀的artifacts。
+
+
 
 ### 結果
+
+在NVIDIA的AI Playground可以線上即時測試結果。
+https://www.nvidia.com/research/inpainting/
+
 <img src="./img/method2_compare1.jpg" width="600px" />
 
 中間那排圖中純白色的位置就是mask，也就是我們想要去除的部份(與method 1 相同)。
