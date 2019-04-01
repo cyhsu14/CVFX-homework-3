@@ -47,7 +47,7 @@ Image completion大多需要對景象較細微與high-level的了解，因為除
 Completion Network是使用Convolution Neural Network，只是與傳統不同，使用的是dilated convolution layers。dilated convolution會將C-channel的HxW input擴充成C'-channel H'xW'。內部公式如下：  
 <img src="./img/dilated.png" width="600px">
 
-kw、kh是kernel的weight和height（必須是奇數以取中心）；η是擴充係數，當η=1即為一般的convolution；xu,v（C維）跟yu,v（C'維）分別是input跟output的pixel component，σ是component-wise的非線性函數，W是C'xC的矩陣，b是C'維的bias向量。train這些網絡是用back propagation做minimize loss function的更新，並且dataset是有一對input與output的。Loss function主要就是要最小化network output image跟dataset正確output image的距離。
+kw、kh是kernel的weight和height（必須是奇數以取中心）；η是擴充係數，當η=1即為一般的convolution；xu,v（C維）跟yu,v（C'維）分別是input跟output的pixel component，σ是component-wise的非線性函數，W是C'xC的矩陣，b是C'維的bias向量。train這些網絡是用back propagation做minimize loss function的更新，並且dataset是有一對input與output的。Loss function主要就是要最小化network output image跟dataset正確output image的距離。
 
 為了節省空間，一開始會降低圖的解析度到256x256，這邊為了避免直接pooling會有的模糊情況，是用strided convolution降到1/4；之後再做deconvolution把它展回去。使用dilated convolution的優點是可以在低解析度上“看”到更大範圍的圖片，範圍大約是307x307px，如果不這麼做的話，只能看到99x99px，範圍太小會使得欲填補畫面中心的資訊太少導致無法正確重現畫面。
 
@@ -62,6 +62,7 @@ kw、kh是kernel的weight和height（必須是奇數以取中心）；η是擴�
 ### 結果
 
 **實驗一：試三張不同mask的圖**
+
 |Source Image|Mask Image|Output Image|
 |:---:|:---:|:---:|
 |<img src="img/output/test1.png" width="300px">|<img src="img/output/test1_mask.png" width="300px">|<img src="img/output/out1.png" width="300px">|
@@ -76,6 +77,7 @@ kw、kh是kernel的weight和height（必須是奇數以取中心）；η是擴�
 
 
 **實驗二：大小圖比較**
+
 |Larger Image(about 800x600)|Smaller Image(about 320x240)|
 |:---:|:---:|
 |<img src="img/output/out1.png" width="300px">|<img src="img/output/out1_small.png" width="300px">|
@@ -88,6 +90,7 @@ kw、kh是kernel的weight和height（必須是奇數以取中心）；η是擴�
 所以，我們又做了兩個圖實驗，以證明以上的觀點，見下圖。
 
 **實驗三：小圖中獨自存在的樹較小vs小圖中獨自存在的樹較大**
+
 |Source Image|Mask Image|Output Image|
 |:---:|:---:|:---:|
 |<img src="img/output/test1_1.png" width="300px">|<img src="img/output/test1_mask2.png" width="300px">|<img src="img/output/out1_2_small.png" width="300px">|
@@ -152,6 +155,7 @@ https://www.nvidia.com/research/inpainting/
 ## Overall comparison and conclusion
 
 以下我們分為幾個面向討論：
+
 |面向\方法|GANPaint|Pytorch Inpainting|Irregular Holes Inpainting Using Partial Convolutions|
 |:---:|:---:|:---:|:---:|
 |優點|有interface可以real-time修改圖|1.可以填補各式不同風格的圖（儘管我們只專注在移除樹）<br>2. 洞可以不只一個||
