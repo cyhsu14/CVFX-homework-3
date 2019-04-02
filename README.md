@@ -156,7 +156,8 @@ https://www.nvidia.com/research/inpainting/
 
 以下我們分為幾個面向討論：
 
-|面向\方法|GANPaint|Pytorch Inpainting|Irregular Holes Inpainting Using Partial Convolutions|
+|面向\方法|GANPaint|Pytorch Inpainting|Irregular Holes Inpainting  
+Using Partial Convolutions|
 |:---:|:---:|:---:|:---:|
 |優點|有interface可以real-time修改圖|1.可以填補各式不同風格的圖（儘管我們只專注在移除樹）<br>2. 洞可以不只一個|只要mask周圍的圖較單純變動量少(如天空或牆壁)，即使mask掉的範圍大，填補的結果也能很好，不容易看出破綻。|
 |缺點||背景與mask受限，只有小圖效果好|若mask周圍的圖變化大，會有明顯的雜訊|
