@@ -34,7 +34,7 @@ GANPaint的出現其實不是為了讓人能產出任意的圖，而是為了要
 
 2. 找出這個c是如何enocode在r裡面
 
-    根據一篇CVPR 2017 David Bau 等人的paper，要定位object classes 在圖中的位置可以對unit做upsampling然後加上threshold。受此啟發，在convolution中，feature map的 h*w大多遠小於output resolution，因此把單個感興趣的unit中的feature map upsample到output resolution，然後threshold，這個新的feature map跟對class c做的segmentation($$ s_c(x) $$)做Intersection-over-Union(IoU)。當IoU越大，則該unit就跟class c越有關。
+    根據一篇CVPR 2017 David Bau 等人的paper，要定位object classes 在圖中的位置可以對unit做upsampling然後加上threshold。受此啟發，在convolution中，feature map的 h*w大多遠小於output resolution，因此把單個感興趣的unit中的feature map upsample到output resolution，然後threshold，這個新的feature map跟對class c做的segmentation(s_c(x))做Intersection-over-Union(IoU)。當IoU越大，則該unit就跟class c越有關。
 
     <img src="./img/IoU.png">
 
@@ -204,4 +204,4 @@ https://www.nvidia.com/research/inpainting/
 |優點|GANPaint的GUI對使用者很友善|1.可以填補各式不同風格的圖（儘管我們只專注在移除樹）<br>2. 洞可以不只一個|只要mask周圍的圖較單純變動量少(如天空或牆壁)，即使mask掉的範圍大，<br>填補的結果也能很好，不容易看出破綻。|
 |缺點|GUI並沒有上傳圖片的功能，因此只能用網站上<br>提供的影像做實驗。|背景與mask受限，只有小圖效果好|若mask周圍的圖變化大，會有明顯的雜訊|
 |實驗結果|<img src="./img/ganPaint_after.png" width="200px">|<img src="img/output/out5.png" width="200px">|<img src="img/method2_ganpaint.png" width="200px">|
-|實驗圖討論|1. 幾乎觀察不到樹的痕跡，推測是因為<br>這個GAN學到了教堂附近樹並不是必要<br>因此，不會想要補樹。<br>2. 屋簷有不合常理的突起，推測是因為<br>model只有學到屋簷的材質跟屋頂的形狀，<br>屋簷該是平滑的這件事並沒有學到。<br>考量跟屋簷有關的feature map中並沒有<br>indicate說這個地方會有屋簷，是model<br>學到這裡該補屋簷所以才補上來的，<br>generate出這種影像是挺合理的。|||
+|實驗圖討論|1. 幾乎觀察不到樹的痕跡，推測是因為這個GAN學到了教堂附近樹並不是必要<br>因此，不會想要補樹。<br>2. 屋簷有不合常理的突起，推測是因為model只有學到屋簷的材質跟屋頂的形狀，<br>屋簷該是平滑的這件事並沒有學到。<br>考量跟屋簷有關的feature map中並沒有<br>indicate說這個地方會有屋簷，是model<br>學到這裡該補屋簷所以才補上來的，<br>generate出這種影像是挺合理的。|||
