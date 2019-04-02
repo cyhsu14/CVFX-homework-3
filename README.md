@@ -160,5 +160,5 @@ https://www.nvidia.com/research/inpainting/
 |:---:|:---:|:---:|:---:|
 |優點|有interface可以real-time修改圖|1.可以填補各式不同風格的圖（儘管我們只專注在移除樹）<br>2. 洞可以不只一個|只要mask周圍的圖較單純變動量少(如天空或牆壁)，即使mask掉的範圍大，填補的結果也能很好，不容易看出破綻。|
 |缺點||背景與mask受限，只有小圖效果好|若mask周圍的圖變化大，會有明顯的雜訊|
-|實驗結果|<img src="./img/ganPaint_after.png" width="300px">|<img src="img/output/out5.png" width="300px">|<img src="img/method2_ganpaint.png" width="300px">|
+|實驗結果|<img src="./img/ganPaint_after.png" width="200px">|<img src="img/output/out5.png" width="200px">|<img src="img/method2_ganpaint.png" width="200px">|
 |效果（排名）||||
