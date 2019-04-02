@@ -154,10 +154,12 @@ https://www.nvidia.com/research/inpainting/
 
 ## Overall comparison and conclusion
 
-以下我們分為幾個面向討論：
+對於method 1(Pytorch inpainting)，這個方法對於移除小圖（300x300左右）且小區塊的樹效果還不錯，可以抹除大部分的痕跡並填補上鄰近區域的texture。這個texture與原本該有的部分可能不算吻合（例如實驗一第三張圖移除樹之後填上的房屋牆壁），我們推測是因為dataset裡是各種不同風格的景象圖，它學習到的填補符合各種不同的風格，所以反而變得雜訊較多。在discriminator階段，除了在upsampling與downsampling時可能有資訊遺失，導致有些不一致的artifact，這個方法在local比較時會與鄰近pixel比較，有時會得到錯誤的背景資訊，例如實驗一二的枯樹，它誤將旁邊沒有mask到的樹枝當作背景填補，以及實驗三的聖誕樹中，聖誕樹被移除之後，該處明顯比旁邊還要黑而且髒髒的。
 
-|面向\方法|GANPaint|Pytorch Inpainting|Irregular Holes Inpainting Using Partial Convolutions|
+以下我們分為幾個面向比較：  
+
+|面向 \ 方法|GANPaint|Pytorch Inpainting|Irregular Holes Inpainting Using Partial Convolutions|
 |:---:|:---:|:---:|:---:|
 |優點|有interface可以real-time修改圖|1.可以填補各式不同風格的圖（儘管我們只專注在移除樹）<br>2. 洞可以不只一個||
-|缺點||背景與mask受限，只有小圖效果好||
+|缺點||1. 背景與mask受限，欲填補的區域要與附近內容相似<br>2.圖不可太大||
 |效果（排名）||||
